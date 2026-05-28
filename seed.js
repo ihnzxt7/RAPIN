@@ -12,6 +12,7 @@
  */
 
 const mongoose = require('mongoose');
+const bcrypt   = require('bcryptjs');   // ← linha adicionada
 require('dotenv').config();
 
 const User     = require('./models/User');
@@ -583,10 +584,14 @@ async function runSeed() {
 
     // ── Usuários ──────────────────────────────────────────────────────────
     if (userCount === 0) {
-      const createdUsers = await User.insertMany(USERS);
-      console.log(`${createdUsers.length} usuários inseridos.`);
-    } else {
-      console.log(`Usuários: já existem ${userCount} no banco — ignorando.`);
+      const usersWithHash = await Promise.all(
+        USERS.map(async u => ({
+          ...u,
+          password: await bcrypt.hash(u.password, 10),
+        }))
+      );
+      const createdUsers = await User.insertMany(usersWithHash);
+      console.log(`   ✅ ${createdUsers.length} usuários inseridos (senhas hasheadas com bcrypt).`);
     }
 
     // ── Materiais ─────────────────────────────────────────────────────────
@@ -626,19 +631,47 @@ async function runSeed() {
 // ─── Execução direta: node seed.js ───────────────────────────────────────────
 if (require.main === module) {
   const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/rapin';
+  const fixMode = process.argv.includes('--fix-passwords');
 
   mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 })
     .then(async () => {
-      console.log('MongoDB conectado para seed.\n');
-      await runSeed();
+      console.log('✅ MongoDB conectado.\n');
+      if (fixMode) {
+        await fixPlainPasswords();
+      } else {
+        await runSeed();
+      }
       await mongoose.connection.close();
-      console.log('🔌 Conexão encerrada.');
+      console.log('\n🔌 Conexão encerrada.');
       process.exit(0);
     })
     .catch(err => {
-      console.error('Erro ao conectar ao MongoDB:', err.message);
+      console.error('❌ Erro ao conectar ao MongoDB:', err.message);
       process.exit(1);
     });
 }
 
-module.exports = { runSeed };
+async function fixPlainPasswords() {
+  console.log('\n🔧 Verificando e corrigindo senhas em texto puro...');
+  const users = await User.find({}).lean();
+  let fixed = 0;
+
+  for (const user of users) {
+    const pwd = user.password;
+    if (!pwd || pwd.startsWith('$2')) {
+      continue; // já é bcrypt — pular
+    }
+    const hashed = await bcrypt.hash(pwd, 10);
+    await User.updateOne({ _id: user._id }, { $set: { password: hashed } });
+    fixed++;
+    console.log(`   ✅ Corrigido: ${user.email}`);
+  }
+
+  if (fixed === 0) {
+    console.log('   ℹ️  Nenhuma senha em texto puro encontrada — tudo OK!');
+  } else {
+    console.log(`\n   🎉 ${fixed} senha(s) corrigida(s). Login deve funcionar agora.`);
+  }
+}
+
+module.exports = { runSeed, fixPlainPasswords };

@@ -24,7 +24,7 @@ const materialsRouter = require('./routes/materials');
 const progressRouter  = require('./routes/progress');
 const authRouter      = require('./routes/auth');
 
-const { runSeed } = require('./seed');
+const { runSeed, fixPlainPasswords } = require('./seed');
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 const app  = express();
@@ -76,6 +76,9 @@ async function startServer() {
 
     // Executar seed se banco estiver vazio
     await runSeed();
+
+    // Corrigir senhas em texto puro (caso o seed antigo tenha sido rodado sem bcrypt)
+    await fixPlainPasswords();
 
     // Iniciar servidor HTTP
     app.listen(PORT, () => {
