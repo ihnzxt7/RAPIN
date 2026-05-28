@@ -1,10 +1,20 @@
-const http = require('http');
+const express = require('express');
+const app = express();
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ message: 'Olá, mundo!' }));
+require('dotenv').config();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json()); // Suporte a JSON no body
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Olá, mundo!' });
 });
 
-server.listen(3000, () => {
-  console.log('Servidor rodando em http://localhost:3000');
+app.post('/dados', (req, res) => {
+  const { nome } = req.body;
+  res.json({ resposta: `Recebido: ${nome}` });
+});
+
+app.listen(PORT, () => {
+  console.log('Servidor Express rodando em http://localhost:3000');
 });
