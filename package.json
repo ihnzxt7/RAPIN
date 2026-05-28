@@ -1,0 +1,31 @@
+{
+  "name": "rapin",
+  "version": "1.0.0",
+  "description": "RAPIN: Rede de Apoio Pedagógico e Inclusão Neuroeducacional",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihnzxt7/RAPIN.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ihnzxt7/RAPIN/issues"
+  },
+  "homepage": "https://github.com/ihnzxt7/RAPIN#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
