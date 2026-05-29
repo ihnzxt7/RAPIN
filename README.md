@@ -313,50 +313,6 @@ limit=100         Máximo de registros
 
 ---
 
-### Health
-
-```
-GET /api/health
-```
-```json
-{ "status": "ok", "db": "connected", "uptime": 123.45 }
-```
-
----
-
-## 🛡️ Autenticação JWT
-
-Todas as requisições autenticadas devem incluir o header:
-
-```
-Authorization: Bearer <token>
-```
-
-O token é obtido em `POST /api/auth/login` e expira em **7 dias** (configurável via `JWT_EXPIRES`).
-
-O front-end armazena o token em `localStorage` com a chave `edu_token` e o injeta automaticamente em todas as requisições via `js/api.js`.
-
----
-
-## 📦 Dependências
-
-### Produção
-| Pacote | Versão | Uso |
-|--------|--------|-----|
-| express | ^4.19.2 | Framework HTTP |
-| mongoose | ^8.4.1 | ODM para MongoDB |
-| bcryptjs | ^2.4.3 | Hash de senhas (salt 10) |
-| jsonwebtoken | ^9.0.2 | Autenticação JWT |
-| cors | ^2.8.5 | Cross-Origin Resource Sharing |
-| dotenv | ^16.4.5 | Variáveis de ambiente |
-| morgan | ^1.10.0 | Log de requisições HTTP |
-
-### Desenvolvimento
-| Pacote | Versão | Uso |
-|--------|--------|-----|
-| nodemon | ^3.1.4 | Auto-restart em desenvolvimento |
-
----
 
 ## 🎯 Scripts NPM
 
@@ -382,42 +338,3 @@ npm run seed    # Executa seed manual (insere dados se banco vazio)
 | **Transcrição** | Texto alternativo ao áudio/vídeo para surdos |
 | **Descrição de áudio** | Alt-text detalhado das imagens para cegos |
 | **Vídeo em Libras** | Link para versão em Língua Brasileira de Sinais |
-
----
-
-## 🔧 Configuração MongoDB Atlas (Produção)
-
-1. Crie um cluster gratuito em [cloud.mongodb.com](https://cloud.mongodb.com)
-2. Crie um usuário de banco com senha
-3. Libere o IP do servidor nas configurações de rede
-4. Copie a URI de conexão e cole no `.env`:
-
-```env
-MONGO_URI=mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/rapin?retryWrites=true&w=majority
-```
-
----
-
-## 📌 Funcionalidades Implementadas
-
-- [x] Servidor Node.js + Express servindo front-end e API REST
-- [x] Autenticação JWT com bcrypt (hash salt 10)
-- [x] CRUD completo de usuários com soft-delete
-- [x] CRUD completo de materiais didáticos
-- [x] Registro de progresso com upsert (user + material)
-- [x] Seed automático na primeira inicialização
-- [x] 9 usuários de demonstração (1 gestor, 2 professores, 6 alunos)
-- [x] 6 materiais completos com quiz, acessibilidade e recursos multimídia
-- [x] Painel do gestor: gerenciar usuários e materiais
-- [x] Interface do aluno: navegar, estudar e responder quizzes
-- [x] Motor de acessibilidade completo (TTS, leitura guiada, contraste, etc.)
-- [x] Sistema de pontos e níveis para gamificação
-
-## 🔜 Próximos Passos
-
-- [ ] Middleware de autorização por role (gestor/professor/aluno)
-- [ ] Endpoint de relatórios e estatísticas consolidadas
-- [ ] Upload de arquivos de mídia (vídeos, PDFs)
-- [ ] Sistema de notificações em tempo real (Socket.io)
-- [ ] Deploy em produção com PM2 + Nginx
-- [ ] Testes automatizados (Jest + Supertest)
