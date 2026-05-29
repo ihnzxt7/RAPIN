@@ -24,7 +24,7 @@ const USERS = [
   // ── Gestor ──
   {
     name:          'Admin Gestor',
-    email:         'gestor@edu.com',
+    email:         'gestor@gestor.edu.pi.gov.br',
     password:      'gestor123',
     role:          'gestor',
     turma:         '',
@@ -39,7 +39,7 @@ const USERS = [
   // ── Professores ──
   {
     name:          'Prof. Adalberto',
-    email:         'adalberto@edu.com',
+    email:         'adalberto@professor.edu.pi.gov.br',
     password:      'prof123',
     role:          'professor',
     turma:         '',
@@ -52,7 +52,7 @@ const USERS = [
   },
   {
     name:          'Prof. Jurismar',
-    email:         'jurismar@edu.com',
+    email:         'jurismar@professor.edu.pi.gov.br',
     password:      'prof123',
     role:          'professor',
     turma:         '',
@@ -67,7 +67,7 @@ const USERS = [
   // ── Alunos ──
   {
     name:          'Iahn',
-    email:         'iahn@edu.com',
+    email:         'iahn@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '1ano',
@@ -84,7 +84,7 @@ const USERS = [
   },
   {
     name:          'Eloa',
-    email:         'eloa@edu.com',
+    email:         'eloa@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '1ano',
@@ -101,7 +101,7 @@ const USERS = [
   },
   {
     name:          'Rodrigo',
-    email:         'rodrigo@edu.com',
+    email:         'rodrigo@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '2ano',
@@ -118,7 +118,7 @@ const USERS = [
   },
   {
     name:          'Enzo',
-    email:         'enzo@edu.com',
+    email:         'enzo@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '2ano',
@@ -135,7 +135,7 @@ const USERS = [
   },
   {
     name:          'Hellen',
-    email:         'hellen@edu.com',
+    email:         'hellen@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '3ano',
@@ -152,7 +152,7 @@ const USERS = [
   },
   {
     name:          'Lucas Ferreira',
-    email:         'lucas@edu.com',
+    email:         'lucas@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '3ano',
