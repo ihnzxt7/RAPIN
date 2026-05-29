@@ -2,10 +2,6 @@
  * RAPIN — Servidor Principal
  * Node.js + Express + MongoDB/Mongoose
  *
- * Responsabilidades:
- *  - Servir os arquivos estáticos (index.html, gestor.html, css/, js/)
- *  - Expor API REST em /api/users, /api/materials, /api/progress
- *  - Executar seed automático se o banco estiver vazio
  */
 
 'use strict';
@@ -82,12 +78,10 @@ async function startServer() {
 
     // Iniciar servidor HTTP
     app.listen(PORT, () => {
-      console.log('─────────────────────────────────────────');
       console.log(`RAPIN rodando em http://localhost:${PORT}`);
       console.log(`Alunos:  http://localhost:${PORT}/index.html`);
       console.log(`Gestor:  http://localhost:${PORT}/gestor.html`);
       console.log(`API:     http://localhost:${PORT}/api`);
-      console.log('─────────────────────────────────────────\n');
     });
   } catch (err) {
     console.error('Erro ao conectar ao MongoDB:', err.message);

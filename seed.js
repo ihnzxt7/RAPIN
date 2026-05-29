@@ -38,12 +38,12 @@ const USERS = [
 
   // ── Professores ──
   {
-    name:          'Prof. Maria Silva',
-    email:         'maria@edu.com',
+    name:          'Prof. Adalberto',
+    email:         'adalberto@edu.com',
     password:      'prof123',
     role:          'professor',
     turma:         '',
-    subjects:      ['portugues', 'historia'],
+    subjects:      ['fisica', 'historia'],
     special_needs: 'none',
     points:        0,
     level:         1,
@@ -51,12 +51,12 @@ const USERS = [
     a11y_prefs:    '',
   },
   {
-    name:          'Prof. João Santos',
-    email:         'joao@edu.com',
+    name:          'Prof. Jurismar',
+    email:         'jurismar@edu.com',
     password:      'prof123',
     role:          'professor',
     turma:         '',
-    subjects:      ['matematica', 'ciencias'],
+    subjects:      ['geografia', 'ciencias'],
     special_needs: 'none',
     points:        0,
     level:         1,
@@ -66,8 +66,8 @@ const USERS = [
 
   // ── Alunos ──
   {
-    name:          'Ana Beatriz Costa',
-    email:         'ana@edu.com',
+    name:          'Iahn',
+    email:         'iahn@edu.com',
     password:      'aluno123',
     role:          'aluno',
     turma:         '1ano',
@@ -83,8 +83,8 @@ const USERS = [
     }),
   },
   {
-    name:          'Carlos Eduardo Lima',
-    email:         'carlos@edu.com',
+    name:          'Eloa',
+    email:         'eloa@edu.com',
     password:      'aluno123',
     role:          'aluno',
     turma:         '1ano',
@@ -100,8 +100,8 @@ const USERS = [
     }),
   },
   {
-    name:          'Fernanda Oliveira',
-    email:         'fernanda@edu.com',
+    name:          'Rodrigo',
+    email:         'rodrigo@edu.com',
     password:      'aluno123',
     role:          'aluno',
     turma:         '2ano',
@@ -117,8 +117,8 @@ const USERS = [
     }),
   },
   {
-    name:          'Gabriel Mendes',
-    email:         'gabriel@edu.com',
+    name:          'Enzo',
+    email:         'enzo@edu.com',
     password:      'aluno123',
     role:          'aluno',
     turma:         '2ano',
@@ -134,8 +134,8 @@ const USERS = [
     }),
   },
   {
-    name:          'Isabela Rodrigues',
-    email:         'isabela@edu.com',
+    name:          'Hellen',
+    email:         'hellen@edu.com',
     password:      'aluno123',
     role:          'aluno',
     turma:         '3ano',
@@ -591,7 +591,7 @@ async function runSeed() {
         }))
       );
       const createdUsers = await User.insertMany(usersWithHash);
-      console.log(`   ✅ ${createdUsers.length} usuários inseridos (senhas hasheadas com bcrypt).`);
+      console.log(`${createdUsers.length} usuários inseridos (senhas hasheadas com bcrypt).`);
     }
 
     // ── Materiais ─────────────────────────────────────────────────────────
@@ -609,7 +609,7 @@ async function runSeed() {
       console.log(`Materiais: já existem ${materialCount} no banco — ignorando.`);
     }
 
-    console.log('🎉 Seed concluído com sucesso!\n');
+    console.log('Seed concluído com sucesso!\n');
     console.log('─── Credenciais de acesso ───────────────────────────────────');
     console.log('  Gestor:     gestor@edu.com      / gestor123');
     console.log('  Professor:  maria@edu.com        / prof123');
@@ -620,8 +620,6 @@ async function runSeed() {
     console.log('  Aluno:      gabriel@edu.com       / aluno123');
     console.log('  Aluno:      isabela@edu.com       / aluno123');
     console.log('  Aluno:      lucas@edu.com         / aluno123');
-    console.log('─────────────────────────────────────────────────────────────\n');
-
   } catch (err) {
     console.error('Erro durante o seed:', err.message);
     throw err;
@@ -635,7 +633,7 @@ if (require.main === module) {
 
   mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 })
     .then(async () => {
-      console.log('✅ MongoDB conectado.\n');
+      console.log('MongoDB conectado.\n');
       if (fixMode) {
         await fixPlainPasswords();
       } else {
@@ -646,13 +644,13 @@ if (require.main === module) {
       process.exit(0);
     })
     .catch(err => {
-      console.error('❌ Erro ao conectar ao MongoDB:', err.message);
+      console.error('Erro ao conectar ao MongoDB:', err.message);
       process.exit(1);
     });
 }
 
 async function fixPlainPasswords() {
-  console.log('\n🔧 Verificando e corrigindo senhas em texto puro...');
+  console.log('\nVerificando e corrigindo senhas em texto puro...');
   const users = await User.find({}).lean();
   let fixed = 0;
 
@@ -664,13 +662,13 @@ async function fixPlainPasswords() {
     const hashed = await bcrypt.hash(pwd, 10);
     await User.updateOne({ _id: user._id }, { $set: { password: hashed } });
     fixed++;
-    console.log(`   ✅ Corrigido: ${user.email}`);
+    console.log(`Corrigido: ${user.email}`);
   }
 
   if (fixed === 0) {
-    console.log('   ℹ️  Nenhuma senha em texto puro encontrada — tudo OK!');
+    console.log('Nenhuma senha em texto puro encontrada — tudo OK!');
   } else {
-    console.log(`\n   🎉 ${fixed} senha(s) corrigida(s). Login deve funcionar agora.`);
+    console.log(`\n${fixed} senha(s) corrigida(s). Login deve funcionar agora.`);
   }
 }
 
