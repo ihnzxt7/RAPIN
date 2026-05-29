@@ -1168,7 +1168,7 @@ const GApp = {
         </form>
         <div class="login-footer" style="margin-top:1rem;">
           <p>Acesso exclusivo para gestores escolares.</p>
-          <p><strong>gestor@escola.edu.br</strong> / gestor123</p>
+          <p><strong>gestor@gestor.edu.pi.gov.br</strong> / gestor123</p>
           <p><a href="index.html">← Área do Aluno/Professor</a></p>
         </div>
       </div>`;

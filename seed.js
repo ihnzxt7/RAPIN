@@ -24,7 +24,7 @@ const USERS = [
   // ── Gestor ──
   {
     name:          'Admin Gestor',
-    email:         'gestor@edu.com',
+    email:         'gestor@gestor.edu.pi.gov.br',
     password:      'gestor123',
     role:          'gestor',
     turma:         '',
@@ -39,7 +39,7 @@ const USERS = [
   // ── Professores ──
   {
     name:          'Prof. Adalberto',
-    email:         'adalberto@edu.com',
+    email:         'adalberto@professor.edu.pi.gov.br',
     password:      'prof123',
     role:          'professor',
     turma:         '',
@@ -52,7 +52,7 @@ const USERS = [
   },
   {
     name:          'Prof. Jurismar',
-    email:         'jurismar@edu.com',
+    email:         'jurismar@professor.edu.pi.gov.br',
     password:      'prof123',
     role:          'professor',
     turma:         '',
@@ -67,7 +67,7 @@ const USERS = [
   // ── Alunos ──
   {
     name:          'Iahn',
-    email:         'iahn@edu.com',
+    email:         'iahn@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '1ano',
@@ -84,7 +84,7 @@ const USERS = [
   },
   {
     name:          'Eloa',
-    email:         'eloa@edu.com',
+    email:         'eloa@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '1ano',
@@ -101,7 +101,7 @@ const USERS = [
   },
   {
     name:          'Rodrigo',
-    email:         'rodrigo@edu.com',
+    email:         'rodrigo@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '2ano',
@@ -118,7 +118,7 @@ const USERS = [
   },
   {
     name:          'Enzo',
-    email:         'enzo@edu.com',
+    email:         'enzo@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '2ano',
@@ -135,7 +135,7 @@ const USERS = [
   },
   {
     name:          'Hellen',
-    email:         'hellen@edu.com',
+    email:         'hellen@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '3ano',
@@ -152,7 +152,7 @@ const USERS = [
   },
   {
     name:          'Lucas Ferreira',
-    email:         'lucas@edu.com',
+    email:         'lucas@aluno.edu.pi.gov.br',
     password:      'aluno123',
     role:          'aluno',
     turma:         '3ano',
@@ -180,7 +180,7 @@ const MATERIALS = [
     description: 'Aprenda o que são frações, como representá-las e suas aplicações no dia a dia.',
     published:   true,
     tags:        ['frações', 'matemática', 'básico', '1ano'],
-    author_name: 'Prof. João Santos',
+    author_name: 'Prof. Adalberto',
 
     content: `<h2>O que são Frações?</h2>
 <p>Uma <strong>fração</strong> representa uma parte de um todo. Ela é escrita com dois números separados por uma barra: o <em>numerador</em> (parte) e o <em>denominador</em> (total de partes).</p>
@@ -233,7 +233,7 @@ Frações aparecem no nosso dia a dia: metade de um chocolate é 1 barra 2; trê
     description: 'Estratégias para compreender e interpretar diferentes tipos de textos.',
     published:   true,
     tags:        ['leitura', 'interpretação', 'português', '1ano'],
-    author_name: 'Prof. Maria Silva',
+    author_name: 'Prof. Douglas',
 
     content: `<h2>Como Interpretar um Texto?</h2>
 <p>Interpretar um texto significa entender a mensagem que o autor quer transmitir. Para isso, precisamos ir além das palavras e pensar sobre o que elas significam juntas.</p>
@@ -304,7 +304,7 @@ Existem dois tipos de perguntas: literais, com respostas no próprio texto, e in
     description: 'Explore os planetas, estrelas e corpos celestes que formam o nosso sistema solar.',
     published:   true,
     tags:        ['sistema solar', 'planetas', 'ciências', '2ano'],
-    author_name: 'Prof. João Santos',
+    author_name: 'Prof. Jurismar',
 
     content: `<h2>Nosso Sistema Solar</h2>
 <p>O <strong>Sistema Solar</strong> é formado pelo Sol e por todos os corpos celestes que orbitam ao seu redor: planetas, luas, asteroides, cometas e outros objetos.</p>
@@ -362,7 +362,7 @@ Júpiter é o maior planeta, e Saturno tem lindos anéis de gelo e rocha.`,
     description: 'Conheça os fatos históricos que levaram à independência do Brasil em 1822.',
     published:   true,
     tags:        ['história', 'Brasil', 'independência', '2ano'],
-    author_name: 'Prof. Maria Silva',
+    author_name: 'Prof. Jurismar',
 
     content: `<h2>A Independência do Brasil</h2>
 <p>No dia <strong>7 de setembro de 1822</strong>, Dom Pedro I proclamou a Independência do Brasil às margens do Rio Ipiranga, em São Paulo. Esse momento marcou o fim do domínio português sobre o território brasileiro.</p>
@@ -509,7 +509,7 @@ O Pantanal é a maior planície alagável do mundo, cheio de animais.`,
     description: 'Aprenda a usar o Present Simple em inglês para falar sobre rotinas e fatos.',
     published:   true,
     tags:        ['inglês', 'present simple', 'gramática', '3ano'],
-    author_name: 'Prof. Maria Silva',
+    author_name: 'Prof. Evanilde',
 
     content: `<h2>Present Simple (Presente Simples)</h2>
 <p>O <strong>Present Simple</strong> é um dos tempos verbais mais usados em inglês. Ele é utilizado para falar sobre <em>rotinas</em>, <em>fatos</em> e <em>situações permanentes</em>.</p>
@@ -611,15 +611,15 @@ async function runSeed() {
 
     console.log('Seed concluído com sucesso!\n');
     console.log('─── Credenciais de acesso ───────────────────────────────────');
-    console.log('  Gestor:     gestor@edu.com      / gestor123');
-    console.log('  Professor:  maria@edu.com        / prof123');
-    console.log('  Professor:  joao@edu.com         / prof123');
-    console.log('  Aluno:      ana@edu.com           / aluno123');
-    console.log('  Aluno:      carlos@edu.com        / aluno123');
-    console.log('  Aluno:      fernanda@edu.com      / aluno123');
-    console.log('  Aluno:      gabriel@edu.com       / aluno123');
-    console.log('  Aluno:      isabela@edu.com       / aluno123');
-    console.log('  Aluno:      lucas@edu.com         / aluno123');
+    console.log('  Gestor:     gestor@gestor.edu.pi.gov.br     / gestor123');
+    console.log('  Professor:  maria@professor.edu.pi.gov.br        / prof123');
+    console.log('  Professor:  joao@professor.edu.pi.gov.br        / prof123');
+    console.log('  Aluno:      ana@aluno.edu.pi.gov.br           / aluno123');
+    console.log('  Aluno:      carlos@aluno.edu.pi.gov.br       / aluno123');
+    console.log('  Aluno:      fernanda@aluno.edu.pi.gov.br     / aluno123');
+    console.log('  Aluno:      gabriel@aluno.edu.pi.gov.br       / aluno123');
+    console.log('  Aluno:      isabela@aluno.edu.pi.gov.br       / aluno123');
+    console.log('  Aluno:      lucas@aluno.edu.pi.gov.br        / aluno123');
   } catch (err) {
     console.error('Erro durante o seed:', err.message);
     throw err;

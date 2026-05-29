@@ -27,10 +27,9 @@ const API = {
 
   // ─── Request base — injeta Bearer token automaticamente ───────────────────
   async _req(method, path, body = null) {
-    const opts = {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-    };
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    const token = this.getToken();
+    if (token) opts.headers['Authorization'] = `Bearer ${token}`;
 
     // Adicionar Authorization se tivermos token
     const token = this.getToken();
@@ -65,16 +64,9 @@ const API = {
    * O servidor verifica o token JWT e retorna o usuário atualizado do MongoDB.
    */
   async getMe() {
-    try {
-      const user = await this._req('GET', `${this.BASE}/auth/me`);
-      this.setUser(user);
-      return user;
-    } catch {
-      // Token inválido ou expirado — limpar sessão
-      const cached = this.getUser();
-      if (!cached) throw new Error('Não autenticado.');
-      return cached;
-    }
+    const user = await this._req('GET', `${this.BASE}/auth/me`);
+    this.setUser(user);
+    return user;
   },
 
   // ─── Usuários ──────────────────────────────────────────────────────────────
@@ -252,23 +244,11 @@ const API = {
    * O JWT do servidor é assinado (HS256) — usamos a expiração do payload.
    */
   isAuthenticated() {
-    try {
-      const token = this.getToken();
-      if (!token) return false;
-
-      // JWT: header.payload.signature — decodificar o payload (base64url)
-      const parts = token.split('.');
-      if (parts.length !== 3) return false;
-
-      // base64url → base64 padrão
-      const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      const payload = JSON.parse(atob(b64));
-
-      // exp é em segundos (padrão JWT), Date.now() em ms
-      return payload.exp ? payload.exp * 1000 > Date.now() : true;
-    } catch {
-      return false;
-    }
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+    const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(b64));
+    return payload.exp ? payload.exp * 1000 > Date.now() : true;
   },
 
   getRole() {
