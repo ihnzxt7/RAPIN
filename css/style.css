@@ -1117,169 +1117,52 @@ tbody td { padding: .55rem .75rem; color: var(--text2); vertical-align: middle; 
 .danger-zone p  { font-size: .74rem; color: var(--text2); margin-bottom: .6rem; }
 
 /* ─── 38. RESPONSIVO ──────────────────────────────────────────── */
-
-/* ── Tablet (≤ 960px) ───────────────────────────────────────── */
 @media (max-width: 960px) {
   .sidebar {
     position: fixed; transform: translateX(-100%);
     height: 100vh; top: 0; z-index: 300;
-    width: 260px !important;          /* largura fixa — não usar 100vw em tablet */
     box-shadow: 4px 0 28px rgba(0,0,0,.5);
-    transition: transform .28s ease;
   }
   .sidebar.mobile-open { transform: translateX(0); }
   .sidebar-mobile-toggle { display: flex !important; }
-
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .materials-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-  .modal { max-width: 96vw; }
-
-  /* Page header: empilhar título e ações em tela menor */
-  .page-header { flex-wrap: wrap; gap: .5rem; }
-
-  /* Pomodoro e voz: afastar do canto para não cobrir conteúdo */
-  .pomodoro-widget { bottom: 5rem; right: 1rem; }
+  .modal { max-width: 100%; }
 }
-
-/* ── Mobile (≤ 600px) ───────────────────────────────────────── */
 @media (max-width: 600px) {
-  :root {
-    --sidebar-w: 85vw;   /* sidebar ocupa 85% — deixa ver que tem overlay */
-    --a11y-h: 44px;      /* barra a11y ligeiramente menor */
-  }
-  html             { font-size: 15px; }
-  html.font-large  { font-size: 17px; }
-  html.font-xlarge { font-size: 20px; }
+  :root { --sidebar-w: 100vw; }
+  html            { font-size: 15px; }
+  html.font-large  { font-size: 18px; }
+  html.font-xlarge { font-size: 21px; }
 
-  /* ── Barra de acessibilidade ── */
-  .a11y-bar { gap: .15rem; padding: 0 .3rem; }
-  .a11y-btn { padding: .22rem .38rem; font-size: .65rem; }
-  .a11y-btn span { display: none; }       /* esconde labels — só ícone */
-  .a11y-btn i    { font-size: .8rem; }
-  .a11y-sep { margin: 0 .05rem; }
-  .a11y-profile-indicator span { display: none; } /* só o ícone no indicador */
+  .a11y-bar { gap: .2rem; padding: 0 .35rem; }
+  .a11y-btn span { display: none; }
+  .a11y-sep { margin: 0; }
 
-  /* ── Sidebar 100% largura no celular ── */
-  .sidebar { width: 88vw !important; }
+  .page-body   { padding: .8rem .6rem; gap: .75rem; }
+  .page-header { padding: .65rem .8rem .45rem; }
 
-  /* ── Layout principal ── */
-  .page-body   { padding: .7rem .55rem; gap: .65rem; }
-  .page-header { padding: .55rem .7rem .4rem; min-height: auto; }
-  .page-header h1 { font-size: .95rem; }
-  .page-header p  { font-size: .68rem; }
-
-  /* ── Stats ── */
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: .5rem; }
-  .stat-card  { padding: .65rem; gap: .55rem; }
-  .stat-icon  { width: 32px; height: 32px; font-size: .85rem; }
-  .stat-value { font-size: 1.15rem; }
-  .stat-label { font-size: .62rem; }
-
-  /* ── Grid de materiais ── */
-  .materials-grid { grid-template-columns: 1fr; gap: .65rem; }
-
-  /* Card horizontal no mobile: thumb menor à esquerda */
-  .material-card { flex-direction: row; }
-  .material-thumb {
-    width: 80px; min-width: 80px; height: auto;
-    font-size: 1.6rem; border-radius: 0;
-    border-right: 1px solid var(--border);
-  }
-  .material-badge { top: .3rem; right: .3rem; font-size: .55rem; }
-  .material-body  { padding: .65rem; }
-  .material-title { font-size: .78rem; }
-  .material-desc  { font-size: .7rem; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
-  .material-footer { padding: .45rem .65rem; }
-
-  /* ── Filtros ── */
-  .filter-bar { flex-direction: column; gap: .45rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: .55rem; }
+  .materials-grid { grid-template-columns: 1fr; }
+  .filter-bar { flex-direction: column; }
   .filter-bar .form-input,
   .filter-bar .form-select { width: 100%; min-width: 0; }
-  .search-bar { width: 100%; }
 
-  /* ── Login ── */
-  .login-screen { padding: calc(var(--a11y-h) + .6rem) .75rem .75rem; }
-  .login-box { padding: 1rem .9rem; border-radius: var(--radius); }
-  .login-logo i  { font-size: 1.7rem; }
-  .login-logo h1 { font-size: 1.15rem; }
-  .login-logo p  { font-size: .7rem; }
+  .login-box { padding: 1.1rem; }
+  .reader-a11y-tools { gap: .2rem; }
+  .reader-body { padding: .8rem .6rem; }
+  .quiz-section { padding: .8rem .6rem; }
+  .card { padding: .75rem; }
+  .a11y-panel { width: 100%; border-radius: 0; left: 0; right: 0; }
 
-  /* ── Leitor ── */
-  .reader-header { padding: .65rem .75rem; gap: .5rem; }
-  .reader-title  { font-size: .9rem; }
-  .reader-meta   { font-size: .68rem; }
-  .reader-a11y-tools { gap: .18rem; padding: .4rem .65rem; }
-  .reader-a11y-btn   { padding: .22rem .4rem; font-size: .64rem; }
-  .reader-body   { padding: .75rem .6rem; }
-  .reader-content { font-size: .87rem; }
-
-  /* ── Quiz ── */
-  .quiz-section { padding: .75rem .6rem; }
-  .quiz-question { font-size: .85rem; }
-  .quiz-option   { padding: .5rem .65rem; font-size: .79rem; gap: .5rem; }
-  .quiz-option-letter { width: 22px; height: 22px; font-size: .63rem; }
-  .quiz-actions  { flex-direction: column-reverse; }
-  .quiz-actions .btn { width: 100%; justify-content: center; }
-
-  /* ── Cards genéricos ── */
-  .card    { padding: .7rem; border-radius: var(--radius); }
-  .card-sm { padding: .55rem; }
-
-  /* ── Modal ── */
-  .modal { padding: .85rem; border-radius: var(--radius); max-height: 92vh; }
+  .profile-needs-grid { grid-template-columns: repeat(3, 1fr); }
+  .modal { padding: .9rem; }
   .modal-footer { flex-direction: column; }
   .modal-footer .btn { width: 100%; justify-content: center; }
-
-  /* ── Painel a11y lateral ── */
-  .a11y-panel { width: 100%; border-radius: 0 0 0 0; left: 0; right: 0; }
-
-  /* ── Perfil — necessidades especiais ── */
-  .profile-needs-grid { grid-template-columns: repeat(3, 1fr); gap: .4rem; }
-  .profile-need-card { padding: .5rem .4rem; }
-  .profile-need-card .need-icon { font-size: 1.2rem; }
-  .profile-need-card .need-name { font-size: .65rem; }
-
-  /* ── Ranking ── */
-  .ranking-item { padding: .5rem .65rem; gap: .55rem; font-size: .78rem; }
-
-  /* ── Toast ── */
-  #toast-container { right: .5rem; left: .5rem; max-width: 100%; bottom: 1rem; }
-  .toast { font-size: .78rem; padding: .55rem .75rem; }
-
-  /* ── Botões de voz / pomodoro: mover para não sobrepor toast ── */
-  .voice-bar     { bottom: 4.5rem; right: .75rem; }
-  .pomodoro-widget { bottom: 4.5rem; right: 4rem; min-width: 130px; }
-  .pomodoro-timer  { font-size: 1.2rem; }
-
-  /* ── XP Bar ── */
-  .xp-bar-container { padding: .6rem .75rem; }
-  .xp-info { font-size: .68rem; }
-
-  /* ── Missões ── */
-  .mission-item { padding: .42rem .5rem; gap: .45rem; }
-  .mission-name { font-size: .74rem; }
-
-  /* ── Passo a passo ── */
-  .step-card { gap: .6rem; padding: .7rem; }
-  .step-number { width: 30px; height: 30px; font-size: .8rem; }
-
-  /* ── Helpers de grid ── */
-  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  #toast-container { right: .4rem; left: .4rem; max-width: 100%; }
 }
-
-/* ── Mobile pequeno (≤ 400px) ───────────────────────────────── */
-@media (max-width: 400px) {
+@media (max-width: 380px) {
   .stats-grid { grid-template-columns: 1fr; }
   .profile-needs-grid { grid-template-columns: repeat(2, 1fr); }
-
-  /* Card de material: voltar a coluna única empilhada */
-  .material-card  { flex-direction: column; }
-  .material-thumb { width: 100%; height: 70px; border-right: none; border-bottom: 1px solid var(--border); }
-
-  .login-box { padding: .85rem .7rem; }
-  .reader-a11y-btn span { display: none; } /* só ícone nas ferramentas do leitor */
-
-  .quiz-option-letter { display: none; }   /* remove letra em telas muito pequenas */
-  .quiz-option { padding: .45rem .55rem; }
 }

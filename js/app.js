@@ -1269,7 +1269,10 @@ const App = {
               <i class="fas fa-key" aria-hidden="true" style="color:var(--accent);margin-right:.3rem;"></i>
               Credenciais de demonstração
             </div>
-            <div><strong>nome@aluno.edu.pi.gov.br</strong> / aluno123 — Dislexia</div>
+            <div><strong>maria@aluno.edu.br</strong> / aluno123 — Dislexia</div>
+            <div><strong>joao@aluno.edu.br</strong> / aluno123 — TDAH</div>
+            <div><strong>lucas@aluno.edu.br</strong> / aluno123 — Visual</div>
+            <div><strong>gestor@escola.edu.br</strong> / gestor123 — Gestor</div>
           </div>
           <div class="login-footer">
             <a href="gestor.html">
