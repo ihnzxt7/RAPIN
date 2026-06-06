@@ -1,15 +1,30 @@
 /* ============================================================
-   RAPIN — Estilos do Painel do Gestor
+   RAPIN — Estilos do Painel do Gestor e do Professor
    Complementa style.css.
+
+   CORREÇÕES v2:
+   - --transition → --tr (alinhado com style.css)
+   - z-index do sidebar usa var(--z-sidebar) do style.css
+   - transition adicionada ao .gestor-sidebar para animação suave
+   - Botão hambúrguer funciona para gestor (#gestor-mobile-open)
+     E para professor (#prof-mobile-open) com um seletor só
+   - .material-progress-item com flex-wrap para não vazar em mobile
+   - .report-header responsivo: avatar menor em telas pequenas
+   - .gestor-content com padding responsivo por breakpoint
+   - Tabelas: min-width contido no table-wrapper (sem scroll no body)
+   - .metric-card usa var(--tr) corretamente
    ============================================================ */
 
-/* ── Login do Gestor ── */
+/* ══════════════════════════════════════════════════════════════
+   LOGIN (gestor e professor compartilham a mesma classe)
+══════════════════════════════════════════════════════════════ */
 .gestor-login {
   position: fixed; inset: 0;
   background: var(--bg);
   display: flex; align-items: center; justify-content: center;
-  z-index: 900;
-  padding: calc(var(--a11y-h) + 1.5rem) 1.5rem 1.5rem;
+  z-index: var(--z-login, 900);
+  padding: calc(var(--a11y-h) + 1.5rem) 1rem 1.5rem;
+  overflow-y: auto;
 }
 .gestor-login-box {
   background: var(--bg2);
@@ -20,15 +35,14 @@
   max-width: 400px;
   box-shadow: var(--shadow);
 }
-.gestor-logo {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-.gestor-logo i { font-size: 2.5rem; color: var(--gold); }
+.gestor-logo { text-align: center; margin-bottom: 1.5rem; }
+.gestor-logo i  { font-size: 2.5rem; color: var(--gold); }
 .gestor-logo h1 { font-size: 1.5rem; font-weight: 700; margin-top: .5rem; }
 .gestor-logo p  { font-size: .82rem; color: var(--text2); margin-top: .25rem; }
 
-/* ── Layout do Painel ── */
+/* ══════════════════════════════════════════════════════════════
+   LAYOUT DO PAINEL
+══════════════════════════════════════════════════════════════ */
 .gestor-app {
   display: flex; flex-direction: column;
   min-height: 100vh;
@@ -39,18 +53,26 @@
   min-height: calc(100vh - var(--a11y-h));
 }
 
-/* ── Sidebar do Gestor ── */
+/* ══════════════════════════════════════════════════════════════
+   SIDEBAR (gestor e professor)
+══════════════════════════════════════════════════════════════ */
 .gestor-sidebar {
   width: var(--sidebar-w);
   background: var(--bg2);
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column;
+  /* Em desktop: sticky para ficar visível ao rolar */
   position: sticky;
   top: var(--a11y-h);
   height: calc(100vh - var(--a11y-h));
   overflow-y: auto;
   flex-shrink: 0;
+  /* CORRIGIDO: transition presente já em desktop para não "saltar" ao entrar no mobile */
+  transition: transform .3s ease;
+  z-index: var(--z-sidebar, 200);
 }
+
+/* Cor de destaque: gestor = gold, professor = accent3 (definido inline no HTML) */
 .gestor-sidebar .sidebar-logo { color: var(--gold); }
 .gestor-sidebar .sidebar-logo i { color: var(--gold); }
 .gestor-sidebar .nav-item.active {
@@ -60,18 +82,33 @@
 }
 .gestor-sidebar .nav-item.active i { color: var(--gold); }
 
-/* ── Área principal do Gestor ── */
-.gestor-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+/* ══════════════════════════════════════════════════════════════
+   ÁREA PRINCIPAL
+══════════════════════════════════════════════════════════════ */
+.gestor-main {
+  flex: 1; display: flex; flex-direction: column;
+  /* CORRIGIDO: min-width:0 para evitar overflow em flex containers */
+  min-width: 0;
+  overflow: hidden;
+}
 
-/* ── Topbar do Gestor ── */
+/* ══════════════════════════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════════════════════════ */
 .gestor-topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding: .85rem 1.5rem;
   background: var(--bg2);
   border-bottom: 1px solid var(--border);
+  /* CORRIGIDO: sticky para sempre visível ao rolar o conteúdo */
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar, 80);
+  gap: .75rem;
+  flex-wrap: wrap;
 }
 .gestor-topbar h2 { font-size: 1.15rem; font-weight: 700; color: var(--text); }
-.gestor-topbar-actions { display: flex; gap: .5rem; align-items: center; }
+.gestor-topbar-actions { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
 .gestor-breadcrumb {
   font-size: .75rem; color: var(--text3);
   display: flex; align-items: center; gap: .3rem;
@@ -79,17 +116,23 @@
 }
 .gestor-breadcrumb span { color: var(--text2); }
 
-/* ── Conteúdo principal ── */
+/* ══════════════════════════════════════════════════════════════
+   CONTEÚDO PRINCIPAL
+══════════════════════════════════════════════════════════════ */
 .gestor-content {
   flex: 1;
   overflow-y: auto;
   padding: 1.5rem;
+  /* CORRIGIDO: position:relative para que elementos sticky internos funcionem */
+  position: relative;
 }
 
-/* ── Cards de métricas do gestor ── */
+/* ══════════════════════════════════════════════════════════════
+   CARDS DE MÉTRICAS
+══════════════════════════════════════════════════════════════ */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -100,8 +143,10 @@
   padding: 1.25rem;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
+  /* CORRIGIDO: var(--tr) em vez de var(--transition) que não existe */
+  transition: transform var(--tr), box-shadow var(--tr);
 }
+/* Faixa colorida no topo */
 .metric-card::before {
   content: '';
   position: absolute;
@@ -120,6 +165,8 @@
 .metric-icon {
   position: absolute; top: 1rem; right: 1rem;
   font-size: 1.5rem; opacity: .15;
+  /* Não interfere com cliques — pointer-events:none */
+  pointer-events: none;
 }
 .metric-trend {
   font-size: .72rem; margin-top: .5rem;
@@ -128,16 +175,20 @@
 .metric-trend.up   { color: var(--green); }
 .metric-trend.down { color: var(--red); }
 
-/* ── Tabelas do gestor ── */
+/* ══════════════════════════════════════════════════════════════
+   CABEÇALHO DE TABELAS
+══════════════════════════════════════════════════════════════ */
 .gestor-table-header {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 1rem;
   flex-wrap: wrap; gap: .75rem;
 }
-.gestor-table-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+.gestor-table-title    { font-size: 1rem; font-weight: 700; color: var(--text); }
 .gestor-table-subtitle { font-size: .78rem; color: var(--text2); }
 
-/* ── Formulários de material (quiz builder) ── */
+/* ══════════════════════════════════════════════════════════════
+   FORMULÁRIO DE MATERIAL — QUIZ BUILDER
+══════════════════════════════════════════════════════════════ */
 .quiz-builder {
   background: var(--bg3);
   border: 1px solid var(--border);
@@ -158,85 +209,82 @@
   margin-bottom: .75rem;
 }
 .quiz-question-num-label {
-  font-size: .72rem; color: var(--text3);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  margin-bottom: .5rem;
+  font-size: .72rem; color: var(--text3); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem;
 }
 .quiz-options-builder { display: flex; flex-direction: column; gap: .4rem; margin-top: .5rem; }
-.quiz-option-input-row {
-  display: flex; align-items: center; gap: .5rem;
-}
-.quiz-option-input-row input[type="radio"] { cursor: pointer; }
+.quiz-option-input-row { display: flex; align-items: center; gap: .5rem; }
+.quiz-option-input-row input[type="radio"] { cursor: pointer; flex-shrink: 0; }
 .quiz-option-input-row .form-input { flex: 1; padding: .4rem .6rem; font-size: .8rem; }
-.quiz-option-input-row .btn-sm { padding: .3rem .5rem; }
-.quiz-correct-label { font-size: .68rem; color: var(--green); margin-left: .25rem; }
+.quiz-correct-label { font-size: .68rem; color: var(--green); margin-top: .25rem; }
 
-/* ── Seção de conteúdo de material ── */
+/* ══════════════════════════════════════════════════════════════
+   SEÇÕES DO MATERIAL (abas: Básico / Conteúdo / A11y / Quiz)
+══════════════════════════════════════════════════════════════ */
 .material-sections-nav {
   display: flex; gap: .4rem;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1rem;
   overflow-x: auto;
   padding-bottom: .15rem;
+  /* Garante que as abas não quebrem linha */
+  white-space: nowrap;
 }
 .material-section-tab {
   padding: .45rem .85rem;
-  background: transparent;
-  border: none;
+  background: transparent; border: none;
   border-bottom: 2px solid transparent;
-  color: var(--text3);
-  font-size: .8rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: var(--transition);
+  color: var(--text3); font-size: .8rem;
+  cursor: pointer; white-space: nowrap;
+  transition: color var(--tr), border-color var(--tr);
+  flex-shrink: 0;
 }
-.material-section-tab.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-.material-section-tab:hover { color: var(--text2); }
+.material-section-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.material-section-tab:hover  { color: var(--text2); }
 
-/* ── Painel de acessibilidade do material ── */
+/* ══════════════════════════════════════════════════════════════
+   PAINEL DE ACESSIBILIDADE DO MATERIAL
+══════════════════════════════════════════════════════════════ */
 .material-a11y-panel {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: .85rem 1rem;
-  margin-top: 1rem;
+  padding: .85rem 1rem; margin-top: 1rem;
 }
 .material-a11y-panel h5 {
   font-size: .78rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .08em;
-  color: var(--accent2);
-  margin-bottom: .65rem;
+  color: var(--accent2); margin-bottom: .65rem;
   display: flex; align-items: center; gap: .4rem;
 }
 .a11y-field-row { display: flex; gap: .75rem; flex-wrap: wrap; }
 .a11y-field-row .form-group { flex: 1; min-width: 180px; }
 
-/* ── Visão geral de necessidades especiais ── */
+/* ══════════════════════════════════════════════════════════════
+   VISÃO GERAL DE NECESSIDADES ESPECIAIS
+══════════════════════════════════════════════════════════════ */
 .needs-overview {
   display: flex; flex-wrap: wrap; gap: .75rem;
   margin-bottom: 1.5rem;
 }
 .needs-stat {
   display: flex; align-items: center; gap: .6rem;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: .6rem .85rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: .6rem .85rem;
   flex: 0 0 auto;
 }
-.needs-stat-icon { font-size: 1.2rem; }
+.needs-stat-icon  { font-size: 1.2rem; }
 .needs-stat-count { font-size: 1.2rem; font-weight: 700; color: var(--text); }
 .needs-stat-label { font-size: .7rem; color: var(--text2); }
 
-/* ── Gráfico de progresso ── */
+/* ══════════════════════════════════════════════════════════════
+   GRÁFICO
+══════════════════════════════════════════════════════════════ */
 .progress-chart-wrapper { position: relative; height: 280px; }
 
-/* ── Ações em massa ── */
+/* ══════════════════════════════════════════════════════════════
+   AÇÕES EM MASSA
+══════════════════════════════════════════════════════════════ */
 .bulk-actions-bar {
   display: flex; align-items: center; gap: .75rem;
   padding: .65rem 1rem;
@@ -245,21 +293,24 @@
   border-radius: var(--radius);
   margin-bottom: 1rem;
   font-size: .82rem;
+  flex-wrap: wrap;
 }
 .bulk-actions-bar .bulk-count { color: var(--accent2); font-weight: 600; flex: 1; }
 
-/* ── Status ── */
+/* ══════════════════════════════════════════════════════════════
+   STATUS DOTS
+══════════════════════════════════════════════════════════════ */
 .status-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: .35rem;
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block; margin-right: .35rem; flex-shrink: 0;
 }
 .status-dot.active   { background: var(--green); }
 .status-dot.inactive { background: var(--red); }
 .status-dot.pending  { background: var(--orange); }
 
-/* ── Confirmação perigosa ── */
+/* ══════════════════════════════════════════════════════════════
+   ZONA DE PERIGO (exclusão)
+══════════════════════════════════════════════════════════════ */
 .danger-zone {
   border: 1px solid rgba(239,68,68,.3);
   border-radius: var(--radius);
@@ -269,101 +320,183 @@
 .danger-zone h5 { color: var(--red); font-size: .85rem; margin-bottom: .5rem; }
 .danger-zone p  { font-size: .78rem; color: var(--text2); margin-bottom: .75rem; }
 
-/* ── Relatório de progresso ── */
+/* ══════════════════════════════════════════════════════════════
+   RELATÓRIO DE PROGRESSO (página Desempenho do professor)
+══════════════════════════════════════════════════════════════ */
 .report-header {
-  display: flex; align-items: center; gap: 1rem;
-  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: .85rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 .report-avatar {
-  width: 56px; height: 56px;
+  width: 52px; height: 52px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent3));
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.3rem; font-weight: 700; color: #fff;
+  font-size: 1.2rem; font-weight: 700; color: #fff;
   flex-shrink: 0;
 }
 .report-title { font-size: 1rem; font-weight: 700; color: var(--text); }
 .report-sub   { font-size: .78rem; color: var(--text2); margin-top: .2rem; }
 
+/* CORRIGIDO: flex-wrap para não vazar em mobile */
 .material-progress-item {
-  display: flex; align-items: center; gap: .75rem;
-  padding: .65rem;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: .4rem;
+  display: flex; align-items: center; gap: .6rem;
+  padding: .6rem .65rem;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: .35rem;
+  flex-wrap: wrap;
 }
-.material-progress-item .title { flex: 1; font-size: .82rem; color: var(--text); }
-.material-progress-item .score { font-size: .8rem; font-weight: 600; color: var(--accent2); }
-.material-progress-item .status-icon { font-size: .9rem; }
+.material-progress-item .title {
+  flex: 1; font-size: .82rem; color: var(--text);
+  /* garante que texto longo não quebre o layout */
+  min-width: 120px;
+}
+.material-progress-item .score  { font-size: .8rem; font-weight: 600; color: var(--accent2); flex-shrink: 0; }
+.material-progress-item .status-icon { font-size: .9rem; flex-shrink: 0; }
 .material-progress-item .status-icon.done    { color: var(--green); }
 .material-progress-item .status-icon.pending { color: var(--text3); }
 
-/* ── Responsivo gestor ── */
+/* ══════════════════════════════════════════════════════════════
+   RANKING (dentro do dashboard do professor)
+══════════════════════════════════════════════════════════════ */
+.ranking-item { cursor: default; }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVO
+   Breakpoints espelham style.css: 960 / 768 / 600 / 380
+══════════════════════════════════════════════════════════════ */
+
+/* ── Tablet landscape (≤960px) ── */
 @media (max-width: 960px) {
-  /* Sidebar fixa + fora da tela, entra com overlay */
+  /* Sidebar sai da tela e entra via overlay */
   .gestor-sidebar {
-    position: fixed; z-index: 300;
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
     transform: translateX(-100%);
-    height: 100vh; top: 0;
-    box-shadow: 4px 0 24px rgba(0,0,0,.4);
-    transition: transform .3s ease;
+    /* transition já definida em desktop — apenas reforça */
+    box-shadow: 4px 0 24px rgba(0,0,0,.45);
   }
   .gestor-sidebar.mobile-open { transform: translateX(0); }
 
-  /* Botão hambúrguer na topbar visível */
-  #gestor-mobile-open { display: flex !important; }
+  /* CORRIGIDO: funciona para gestor E professor com um seletor só */
+  #gestor-mobile-open,
+  #prof-mobile-open { display: flex !important; }
 
   /* Métricas em 2 colunas */
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
 
-  /* Tabela scrollável */
+  /* Tabelas com scroll interno — não vaza no body */
   .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .table-wrapper table { min-width: 540px; }
+
+  /* Topbar menos padding */
+  .gestor-topbar { padding: .65rem 1rem; }
+
+  /* Conteúdo com padding lateral reduzido */
+  .gestor-content { padding: 1.1rem; }
 }
 
-@media (max-width: 600px) {
-  :root { --sidebar-w: 100vw; }
+/* ── Tablet portrait (≤768px) ── */
+@media (max-width: 768px) {
+  .gestor-content { padding: .9rem .85rem; }
 
-  /* Topbar compacta */
-  .gestor-topbar { padding: .55rem .75rem; gap: .5rem; }
-  .gestor-topbar .btn span { display: none; } /* esconde texto dos botões */
-  .gestor-topbar .btn { padding: .35rem .55rem; }
-
-  /* Conteúdo principal */
-  .gestor-content { padding: .85rem .65rem; }
-
-  /* Métricas em 2 colunas compactas */
-  .metrics-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: .6rem;
-    margin-bottom: 1rem;
+  /* Cabeçalho de tabela empilha verticalmente */
+  .gestor-table-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .metric-value { font-size: 1.5rem; }
+  /* Barra de busca e filtros ocupam toda a largura */
+  .gestor-table-header > div:last-child {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .gestor-table-header .search-bar { flex: 1; min-width: 0; }
+  .gestor-table-header .form-select { flex: 1; min-width: 0; }
 
-  /* Precisa-stats em wrap */
+  /* Métricas continuam 2 colunas mas padding menor */
+  .metric-card { padding: .85rem; }
+  .metric-value { font-size: 1.6rem; }
+
+  /* needs-overview empilha mais cedo */
   .needs-overview { gap: .45rem; }
   .needs-stat { padding: .45rem .65rem; }
 
-  /* Tabelas */
-  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .table-wrapper table { min-width: 480px; }
-  .gestor-table-header { flex-direction: column; align-items: flex-start; }
+  /* Relatório: avatar menor */
+  .report-avatar { width: 44px; height: 44px; font-size: 1rem; }
 
-  /* Login do gestor */
-  .gestor-login-box { padding: 1.25rem; margin: 0 .5rem; }
-  .gestor-logo i { font-size: 1.9rem; }
-  .gestor-logo h1 { font-size: 1.2rem; }
-
-  /* Grid interna (formulários) */
-  .grid-2, .grid-3 { grid-template-columns: 1fr; }
-
-  /* Painel a11y material */
+  /* A11y field row empilha */
   .a11y-field-row { flex-direction: column; }
   .a11y-field-row .form-group { min-width: 0; width: 100%; }
+
+  /* Gráfico menor para não ocupar tela inteira */
+  .progress-chart-wrapper { height: 220px; }
 }
 
+/* ── Mobile (≤600px) ── */
+@media (max-width: 600px) {
+  :root { --sidebar-w: 100vw; }
+
+  /* Topbar compacta: esconde texto dos botões para ganhar espaço */
+  .gestor-topbar { padding: .5rem .65rem; gap: .4rem; }
+  .gestor-topbar .btn span { display: none; }
+  .gestor-topbar .btn { padding: .35rem .5rem; }
+  /* Título menor */
+  .gestor-topbar h2 { font-size: .92rem; }
+
+  /* Conteúdo bem compacto */
+  .gestor-content { padding: .75rem .6rem; }
+
+  /* Métricas 2 colunas compactas */
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: .55rem;
+    margin-bottom: .85rem;
+  }
+  .metric-card  { padding: .75rem .65rem; }
+  .metric-value { font-size: 1.4rem; }
+  .metric-label { font-size: .7rem; }
+  /* Ícone decorativo some para economizar espaço */
+  .metric-icon  { display: none; }
+
+  /* Needs overview */
+  .needs-overview { flex-direction: column; gap: .4rem; }
+  .needs-stat { width: 100%; }
+
+  /* Tabelas com min-width menor em mobile */
+  .table-wrapper table { min-width: 420px; }
+
+  /* Login */
+  .gestor-login { padding: calc(var(--a11y-h) + 1rem) .75rem 1rem; }
+  .gestor-login-box { padding: 1.25rem; }
+  .gestor-logo i  { font-size: 1.9rem; }
+  .gestor-logo h1 { font-size: 1.2rem; }
+
+  /* Grids internas (formulários) */
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+  /* Report header em mobile: avatar menor ainda */
+  .report-avatar { width: 36px; height: 36px; font-size: .9rem; }
+  .report-title  { font-size: .9rem; }
+
+  /* Material progress item: empilha o score abaixo do título */
+  .material-progress-item { gap: .4rem; }
+  .material-progress-item .title { min-width: 100%; order: 2; }
+  .material-progress-item .status-icon { order: 1; }
+  .material-progress-item .score { order: 3; }
+
+  /* Gráfico responsivo */
+  .progress-chart-wrapper { height: 180px; }
+
+  /* Bulk actions empilha */
+  .bulk-actions-bar { flex-direction: column; align-items: flex-start; gap: .5rem; }
+}
+
+/* ── Mobile pequeno (≤380px) ── */
 @media (max-width: 380px) {
   .metrics-grid { grid-template-columns: 1fr; }
-  .needs-overview { flex-direction: column; }
+  .needs-stat { flex-direction: column; text-align: center; gap: .25rem; }
+  .gestor-table-header .btn span { display: none; }
+  .gestor-table-header .btn { padding: .35rem .5rem; }
 }

@@ -1,14 +1,13 @@
 /* ============================================================
-   RAPIN — Estilos Principais v3
+   RAPIN — Estilos Principais v4
    Design: dark, acessível, responsivo
+   Breakpoints: 960px (tablet), 600px (mobile), 380px (pequeno)
    ============================================================ */
 
 /* ─── 1. RESET ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ─── 2. FONT-SIZE NO <HTML> ─────────────────────────────────
-   Todos os rem são relativos ao <html>.
-   js/a11y.js adiciona .font-large / .font-xlarge aqui.       */
+/* ─── 2. FONT-SIZE NO <HTML> ─────────────────────────────────── */
 html { font-size: 16px; scroll-behavior: smooth; }
 html.font-large  { font-size: 19px; }
 html.font-xlarge { font-size: 23px; }
@@ -21,7 +20,7 @@ html.font-xlarge { font-size: 23px; }
   --bg3:     #1A1E35;
   --bg4:     #212540;
 
-  /* Cores de destaque */
+  /* Destaques */
   --accent:  #6C63FF;
   --accent2: #9D97FF;
   --accent3: #4ECDC4;
@@ -35,19 +34,30 @@ html.font-xlarge { font-size: 23px; }
   --text2:   #94A3B8;
   --text3:   #64748B;
 
-  /* Bordas e decoração */
-  --border:  #2A2F4E;
-  --radius:  10px;
-  --radius-lg: 16px;
-  --shadow:  0 4px 24px rgba(0,0,0,.45);
+  /* Bordas / decoração */
+  --border:     #2A2F4E;
+  --radius:     10px;
+  --radius-lg:  16px;
+  --shadow:     0 4px 24px rgba(0,0,0,.45);
 
   /* Layout */
   --sidebar-w: 240px;
   --a11y-h:    48px;
   --header-h:  56px;
 
-  /* Transições */
+  /* Transições — NOTA: use sempre --tr (não --transition) */
   --tr: .2s ease;
+
+  /* Z-index stack (documentado para evitar colisões) */
+  --z-overlay:   199;   /* sidebar overlay */
+  --z-sidebar:   200;   /* sidebar mobile */
+  --z-topbar:     80;   /* topbars sticky */
+  --z-a11y-bar: 1000;   /* barra superior */
+  --z-a11y-panel: 1001; /* painel lateral a11y — ACIMA da barra */
+  --z-modal:     2000;  /* modais */
+  --z-spinner:   2001;  /* spinner (acima de tudo) */
+  --z-toast:     2002;  /* toasts (acima de tudo) */
+  --z-login:      900;  /* tela de login */
 }
 
 /* ─── 4. MODOS DE ACESSIBILIDADE ─────────────────────────────── */
@@ -78,8 +88,6 @@ html.font-xlarge { font-size: 23px; }
   word-spacing:   .18em !important;
   line-height:    1.9   !important;
 }
-
-/* Espaçamento ampliado */
 .dyslexia-spacing p,
 .dyslexia-spacing li,
 .dyslexia-spacing .reader-content {
@@ -89,7 +97,7 @@ html.font-xlarge { font-size: 23px; }
   margin-bottom:  1.2em !important;
 }
 
-/* Realce de linha ao hover — aplica em qualquer contexto de texto, não só no leitor */
+/* Realce de linha */
 .line-highlight p,
 .line-highlight li {
   transition: background .18s ease, padding-left .18s ease;
@@ -125,13 +133,12 @@ html.font-xlarge { font-size: 23px; }
 /* Modo foco TDAH */
 .tdah-focus-mode .main-content { max-width: 860px; margin: 0 auto; }
 
-/* Parágrafo ativo — leitura guiada (transition consolidada em .reader-content p abaixo) */
+/* Parágrafo ativo — leitura guiada */
 .reader-content p.reading-active {
   background: rgba(108,99,255,.14) !important;
   border-left: 3px solid var(--accent) !important;
   padding: .5rem .75rem !important;
   border-radius: 0 var(--radius) var(--radius) 0;
-  /* opacity controlada via JS inline — não forçar aqui para não quebrar o dimming */
 }
 
 /* ─── 5. BASE ─────────────────────────────────────────────────── */
@@ -167,14 +174,14 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   position: absolute; top: -100px; left: .5rem;
   background: var(--accent); color: #fff;
   padding: .5rem 1rem; border-radius: var(--radius);
-  font-size: .85rem; font-weight: 600; z-index: 9999;
+  font-size: .85rem; font-weight: 600; z-index: var(--z-toast);
   text-decoration: none; transition: top .15s;
 }
 .skip-link:focus { top: .5rem; }
 
 /* ─── 8. BARRA DE ACESSIBILIDADE ──────────────────────────────── */
 .a11y-bar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-a11y-bar);
   height: var(--a11y-h);
   background: var(--bg3);
   border-bottom: 1px solid var(--border);
@@ -207,12 +214,14 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: .65rem; color: var(--accent2); flex-shrink: 0;
   background: rgba(108,99,255,.12); padding: .18rem .5rem;
   border-radius: 99px; border: 1px solid rgba(108,99,255,.3);
+  /* Garante que não transborde em mobile */
+  max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
 /* ─── 9. TOAST ────────────────────────────────────────────────── */
 #toast-container {
-  position: fixed; bottom: 1.5rem; right: 1.5rem;
-  z-index: 9999; display: flex; flex-direction: column;
+  position: fixed; bottom: 1.25rem; right: 1.25rem;
+  z-index: var(--z-toast); display: flex; flex-direction: column;
   gap: .45rem; pointer-events: none;
   max-width: 320px; width: calc(100% - 2rem);
 }
@@ -234,7 +243,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* ─── 10. SPINNER ─────────────────────────────────────────────── */
 .global-spinner {
-  position: fixed; inset: 0; z-index: 9998;
+  position: fixed; inset: 0; z-index: var(--z-spinner);
   background: rgba(0,0,0,.55); backdrop-filter: blur(3px);
   display: flex; align-items: center; justify-content: center;
 }
@@ -248,19 +257,20 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* ─── 11. MODAL ────────────────────────────────────────────────── */
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 2000;
+  position: fixed; inset: 0; z-index: var(--z-modal);
   background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 1rem; animation: fadeIn .2s ease; overflow-y: auto;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: max(env(safe-area-inset-top, 1rem), 4rem) 1rem 1rem;
+  animation: fadeIn .2s ease; overflow-y: auto;
 }
 .modal-overlay.hidden { display: none; }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 .modal {
   background: var(--bg2); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: 1.4rem;
-  width: 100%; max-width: 520px;
-  max-height: calc(100vh - 2rem); overflow-y: auto;
-  animation: slideUp .25s ease; box-shadow: var(--shadow); margin: auto;
+  width: 100%; max-width: 540px;
+  animation: slideUp .25s ease; box-shadow: var(--shadow);
+  /* Sem max-height fixo — o overflow-y do overlay gerencia o scroll */
 }
 @keyframes slideUp { from { transform:translateY(16px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 .modal-header {
@@ -302,7 +312,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   height: calc(100vh - var(--a11y-h));
   overflow-y: auto; flex-shrink: 0;
   transition: width .28s ease, transform .28s ease;
-  z-index: 200;
+  z-index: var(--z-sidebar);
 }
 .sidebar.collapsed { width: 58px; }
 .sidebar.collapsed .nav-label,
@@ -373,11 +383,10 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: .56rem; padding: .08rem .3rem;
   border-radius: 99px; font-weight: 700;
 }
-/* Tooltip: oculto por padrão; exibido apenas quando sidebar está colapsada e em hover */
+/* Tooltip: só visível quando sidebar está colapsada */
 .nav-item-tooltip { display: none; }
-/* Tooltip sidebar collapsed */
 .sidebar.collapsed .nav-item-tooltip {
-  display: block; /* sobrescreve o display:none padrão */
+  display: block;
   position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%);
   background: var(--bg4); border: 1px solid var(--border); color: var(--text);
   padding: .28rem .55rem; border-radius: 6px; font-size: .72rem;
@@ -407,14 +416,16 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 .btn-logout:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
-/* Overlay para fechar sidebar no mobile */
+/* Overlay — deve ficar ABAIXO da sidebar mas ACIMA do conteúdo */
 .sidebar-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.55); z-index: 199; cursor: pointer;
+  background: rgba(0,0,0,.55);
+  z-index: calc(var(--z-sidebar) - 1); /* 199 — abaixo da sidebar (200) */
+  cursor: pointer;
 }
 .sidebar-overlay.visible { display: block; }
 
-/* Botão hambúrguer: escondido em desktop, aparece em mobile via media query */
+/* Botão hambúrguer: oculto em desktop */
 .sidebar-mobile-toggle { display: none; }
 
 /* ─── 14. CONTEÚDO PRINCIPAL ──────────────────────────────────── */
@@ -428,6 +439,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   background: var(--bg2); flex-shrink: 0;
   display: flex; align-items: center; gap: .65rem;
   min-height: var(--header-h);
+  position: sticky; top: 0; z-index: var(--z-topbar);
 }
 .page-header h1 { font-size: 1.1rem; font-weight: 700; color: var(--text); }
 .page-header p  { font-size: .73rem; color: var(--text2); margin-top: .1rem; }
@@ -438,7 +450,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* ─── 15. LOGIN ────────────────────────────────────────────────── */
 .login-screen {
-  position: fixed; inset: 0; background: var(--bg); z-index: 900;
+  position: fixed; inset: 0; background: var(--bg); z-index: var(--z-login);
   display: flex; align-items: center; justify-content: center;
   padding: calc(var(--a11y-h) + 1rem) 1rem 1rem;
   overflow-y: auto;
@@ -538,7 +550,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 /* ─── 19. DASHBOARD / STATS ────────────────────────────────────── */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: .8rem;
 }
 .stat-card {
@@ -581,7 +593,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 /* ─── 20. GRID DE MATERIAIS ────────────────────────────────────── */
 .materials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: .85rem;
 }
 .material-card {
@@ -659,10 +671,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: .9rem; line-height: 1.8; color: var(--text);
   max-width: 700px; margin: 0 auto;
 }
-.reader-content p    {
+.reader-content p {
   margin-bottom: .85rem;
-  /* Cobre: leitura guiada (background, border-left, opacity, padding)
-     e realce hover (background, padding-left) — regra posterior vence a da linha 95 */
   transition: background .2s ease, border-left .2s ease,
               opacity .2s ease, padding .2s ease, padding-left .2s ease;
 }
@@ -752,6 +762,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .quiz-option.selected .quiz-option-letter { background: var(--accent); color: #fff; }
 .quiz-option.correct  .quiz-option-letter { background: var(--green);  color: #fff; }
 .quiz-option.wrong    .quiz-option-letter { background: var(--red);    color: #fff; }
+/* Corrigido: justify-content:center em mobile para melhor UX */
 .quiz-actions { display: flex; justify-content: flex-end; gap: .45rem; margin-top: .85rem; flex-wrap: wrap; }
 .quiz-feedback {
   background: var(--bg3); border: 1px solid var(--border);
@@ -759,29 +770,19 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   font-size: .8rem; margin-top: .6rem;
   display: flex; align-items: flex-start; gap: .4rem;
 }
-.quiz-feedback.correct {
-  background: rgba(16,185,129,.1); border-color: var(--green); color: var(--green);
-}
-.quiz-feedback.wrong {
-  background: rgba(239,68,68,.1); border-color: var(--red); color: var(--red);
-}
+.quiz-feedback.correct { background: rgba(16,185,129,.1); border-color: var(--green); color: var(--green); }
+.quiz-feedback.wrong   { background: rgba(239,68,68,.1);  border-color: var(--red);   color: var(--red); }
 
 /* Quiz resultado */
-.quiz-result {
-  text-align: center; padding: 1.5rem 1rem;
-}
-.result-stars {
-  font-size: 2rem; margin-bottom: .75rem; letter-spacing: .15em;
-}
+.quiz-result { text-align: center; padding: 1.5rem 1rem; }
+.result-stars { font-size: 2rem; margin-bottom: .75rem; letter-spacing: .15em; }
 .result-score {
   font-size: 3rem; font-weight: 800;
   background: linear-gradient(90deg, var(--accent), var(--accent3));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; line-height: 1; margin-bottom: .35rem;
 }
-.result-label {
-  font-size: .82rem; color: var(--text2); margin-bottom: .75rem;
-}
+.result-label  { font-size: .82rem; color: var(--text2); margin-bottom: .75rem; }
 .result-points {
   display: inline-flex; align-items: center; gap: .4rem;
   background: rgba(255,209,102,.12); border: 1px solid rgba(255,209,102,.3);
@@ -797,7 +798,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   border-radius: var(--radius); padding: .6rem .85rem;
   font-size: .82rem; transition: var(--tr);
 }
-.ranking-item:hover { border-color: var(--border); background: var(--bg3); }
+.ranking-item:hover { background: var(--bg3); }
 .ranking-item.me { border-color: var(--accent); background: rgba(108,99,255,.07); }
 .ranking-pos {
   font-size: .82rem; font-weight: 700; min-width: 28px;
@@ -806,7 +807,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .gold-pos   { color: var(--gold); }
 .silver-pos { color: #C0C0C0; }
 .bronze-pos { color: #CD7F32; }
-.ranking-name { flex: 1; color: var(--text); font-size: .8rem; }
+.ranking-name { flex: 1; color: var(--text); font-size: .8rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ranking-pts { color: var(--accent2); font-size: .75rem; font-weight: 600; flex-shrink: 0; }
 
 /* ─── 24. MISSÕES ──────────────────────────────────────────────── */
@@ -862,11 +863,12 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .profile-need-card.selected .need-name { color: var(--accent2); }
 
 /* ─── 26. POMODORO ──────────────────────────────────────────────── */
+/* CORRIGIDO: deslocado para bottom-left para não colidir com toasts e voice-bar (direita) */
 .pomodoro-widget {
-  position: fixed; bottom: 1.5rem; right: 5rem; z-index: 499;
+  position: fixed; bottom: 1.25rem; left: 1.25rem; z-index: 499;
   background: var(--bg2); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: .85rem 1rem;
-  min-width: 160px; box-shadow: var(--shadow);
+  min-width: 150px; box-shadow: var(--shadow);
   text-align: center;
 }
 .pomodoro-ring { margin: .5rem auto; }
@@ -874,8 +876,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .pomodoro-label { font-size: .65rem; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
 
 /* ─── 27. VOZ ───────────────────────────────────────────────────── */
+/* CORRIGIDO: voice-bar fica no canto inferior direito, longe do pomodoro (esquerda) */
 .voice-bar {
-  position: fixed; bottom: 1.5rem; right: 1.25rem;
+  position: fixed; bottom: 1.25rem; right: 1.25rem;
   z-index: 500; display: flex; flex-direction: column;
   align-items: flex-end; gap: .4rem;
 }
@@ -901,12 +904,14 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .voice-transcript-box.visible { display: block; }
 
 /* ─── 28. PAINEL A11Y LATERAL ──────────────────────────────────── */
+/* CORRIGIDO: z-index elevado para ficar acima da barra a11y (1000) mas abaixo do modal (2000) */
 .a11y-panel {
-  position: fixed; top: var(--a11y-h); right: 0;
+  position: fixed; top: var(--a11y-h); right: 0; left: auto;
   width: 280px; background: var(--bg2);
   border: 1px solid var(--border); border-top: 0;
   border-radius: 0 0 0 var(--radius-lg);
-  z-index: 999; padding: .85rem;
+  z-index: var(--z-a11y-panel); /* 1001 */
+  padding: .85rem;
   box-shadow: var(--shadow);
   transform: translateX(105%); transition: transform .28s ease;
   max-height: calc(100vh - var(--a11y-h)); overflow-y: auto;
@@ -939,7 +944,12 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .a11y-switch input:checked + .a11y-switch-slider::before { transform: translateX(16px); }
 
 /* ─── 29. TABELAS ──────────────────────────────────────────────── */
-.table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+/* CORRIGIDO: overflow no wrapper para conter scroll dentro do card */
+.table-wrapper {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  /* Garante que o scroll fique dentro do card, não no body */
+  max-width: 100%;
+}
 table { width: 100%; border-collapse: collapse; font-size: .78rem; }
 thead th {
   text-align: left; padding: .55rem .75rem;
@@ -965,7 +975,7 @@ tbody td { padding: .55rem .75rem; color: var(--text2); vertical-align: middle; 
 .tag-gold   { background: rgba(255,209,102,.15); color: var(--gold);    border: 1px solid rgba(255,209,102,.3); }
 .tag-green  { background: rgba(16,185,129,.15);  color: var(--green);   border: 1px solid rgba(16,185,129,.3); }
 .tag-red    { background: rgba(239,68,68,.15);   color: var(--red);     border: 1px solid rgba(239,68,68,.3); }
-.tag-orange { background: rgba(245,158,11,.15); color: var(--orange); border: 1px solid rgba(245,158,11,.3); }
+.tag-orange { background: rgba(245,158,11,.15);  color: var(--orange);  border: 1px solid rgba(245,158,11,.3); }
 .tag-gray   { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
 
 .role-tag { padding: .15rem .45rem; border-radius: 99px; font-size: .65rem; font-weight: 600; }
@@ -988,11 +998,12 @@ tbody td { padding: .55rem .75rem; color: var(--text2); vertical-align: middle; 
   display: flex; gap: .55rem; flex-wrap: wrap; align-items: center;
 }
 .filter-bar .form-input,
-.filter-bar .form-select { width: auto; flex: 1; min-width: 120px; }
+.filter-bar .form-select { width: auto; flex: 1; min-width: 140px; }
 .search-bar {
   display: flex; align-items: center; gap: .4rem;
   background: var(--bg3); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 0 .65rem; flex: 1;
+  min-width: 160px;
 }
 .search-bar input {
   background: none; border: none; color: var(--text);
@@ -1054,13 +1065,16 @@ tbody td { padding: .55rem .75rem; color: var(--text2); vertical-align: middle; 
 .mt-lg   { margin-top: 1.5rem; }
 .mb-sm   { margin-bottom: .5rem; }
 .mb-md   { margin-bottom: 1rem; }
-.text-sm    { font-size: .75rem; }
-.text-muted { color: var(--text2); }
-.text-center{ text-align: center; }
-.font-bold  { font-weight: 700; }
-.w-full     { width: 100%; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+.text-sm     { font-size: .75rem; }
+.text-muted  { color: var(--text2); }
+.text-center { text-align: center; }
+.text-green  { color: var(--green); }
+.text-red    { color: var(--red); }
+.font-bold   { font-weight: 700; }
+.w-full      { width: 100%; }
+/* CORRIGIDO: grid-2 e grid-3 usam minmax para ser mais resilientes */
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 
 /* ─── 36. ANIMAÇÕES ────────────────────────────────────────────── */
 @keyframes popIn  { 0%{transform:scale(.85);opacity:0} 80%{transform:scale(1.04)} 100%{transform:scale(1);opacity:1} }
@@ -1068,7 +1082,7 @@ tbody td { padding: .55rem .75rem; color: var(--text2); vertical-align: middle; 
 .animate-pop   { animation: popIn  .28s ease forwards; }
 .animate-pulse { animation: pulse  2s   ease-in-out infinite; }
 
-/* ─── 37. MATERIAL SECTIONS (quiz builder) ─────────────────────── */
+/* ─── 37. QUIZ BUILDER / MATERIAL FORM ────────────────────────── */
 .material-sections-nav {
   display: flex; gap: .3rem; border-bottom: 1px solid var(--border);
   margin-bottom: .85rem; overflow-x: auto; padding-bottom: .1rem;
@@ -1116,53 +1130,137 @@ tbody td { padding: .55rem .75rem; color: var(--text2); vertical-align: middle; 
 .danger-zone h5 { color: var(--red); font-size: .8rem; margin-bottom: .38rem; }
 .danger-zone p  { font-size: .74rem; color: var(--text2); margin-bottom: .6rem; }
 
-/* ─── 38. RESPONSIVO ──────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   38. RESPONSIVO
+   960px = tablet landscape / pequenos notebooks
+   768px = tablet portrait
+   600px = mobile grande
+   380px = mobile pequeno
+════════════════════════════════════════════════════════════════ */
+
+/* ── Tablet landscape (≤960px) ── */
 @media (max-width: 960px) {
   .sidebar {
-    position: fixed; transform: translateX(-100%);
-    height: 100vh; top: 0; z-index: 300;
+    position: fixed;
+    transform: translateX(-100%);
+    height: 100vh; top: 0;
+    z-index: var(--z-sidebar);
     box-shadow: 4px 0 28px rgba(0,0,0,.5);
+    transition: transform .3s ease;
   }
   .sidebar.mobile-open { transform: translateX(0); }
   .sidebar-mobile-toggle { display: flex !important; }
+
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .materials-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .materials-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .modal { max-width: 100%; }
+
+  /* Page body com menos padding lateral */
+  .page-body { padding: .9rem; }
 }
+
+/* ── Tablet portrait (≤768px) ── */
+@media (max-width: 768px) {
+  .filter-bar { flex-direction: column; }
+  .filter-bar .search-bar,
+  .filter-bar .form-input,
+  .filter-bar .form-select { width: 100%; min-width: 0; flex: none; }
+
+  .materials-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+  .reader-a11y-tools { padding: .4rem .75rem; gap: .2rem; }
+
+  /* Pomodoro menor em tablet */
+  .pomodoro-widget { padding: .6rem .75rem; min-width: 130px; }
+  .pomodoro-timer  { font-size: 1.25rem; }
+}
+
+/* ── Mobile (≤600px) ── */
 @media (max-width: 600px) {
-  :root { --sidebar-w: 100vw; }
-  html            { font-size: 15px; }
+  :root {
+    --sidebar-w: 100vw;
+    --a11y-h: 44px;
+  }
+  html             { font-size: 15px; }
   html.font-large  { font-size: 18px; }
   html.font-xlarge { font-size: 21px; }
 
-  .a11y-bar { gap: .2rem; padding: 0 .35rem; }
+  /* A11y bar: ocultar textos para caber tudo */
+  .a11y-bar { gap: .15rem; padding: 0 .4rem; }
   .a11y-btn span { display: none; }
-  .a11y-sep { margin: 0; }
+  .a11y-sep { margin: 0 .05rem; }
+  .a11y-profile-indicator { display: none; } /* evita overflow em telas muito pequenas */
 
-  .page-body   { padding: .8rem .6rem; gap: .75rem; }
-  .page-header { padding: .65rem .8rem .45rem; }
+  /* Layout */
+  .page-body   { padding: .65rem .55rem; gap: .65rem; }
+  .page-header { padding: .55rem .7rem .4rem; }
 
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: .55rem; }
-  .materials-grid { grid-template-columns: 1fr; }
-  .filter-bar { flex-direction: column; }
-  .filter-bar .form-input,
-  .filter-bar .form-select { width: 100%; min-width: 0; }
-
-  .login-box { padding: 1.1rem; }
-  .reader-a11y-tools { gap: .2rem; }
-  .reader-body { padding: .8rem .6rem; }
-  .quiz-section { padding: .8rem .6rem; }
+  /* Cards */
   .card { padding: .75rem; }
-  .a11y-panel { width: 100%; border-radius: 0; left: 0; right: 0; }
 
-  .profile-needs-grid { grid-template-columns: repeat(3, 1fr); }
-  .modal { padding: .9rem; }
+  /* Stats */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: .5rem; }
+  .stat-value { font-size: 1.1rem; }
+  .stat-icon  { width: 32px; height: 32px; font-size: .85rem; }
+
+  /* Materiais */
+  .materials-grid { grid-template-columns: 1fr; }
+
+  /* Leitor */
+  .reader-body { padding: .75rem .55rem; }
+  .reader-a11y-tools { padding: .35rem .55rem; }
+  .reader-content { font-size: .85rem; }
+
+  /* Quiz */
+  .quiz-section { padding: .75rem .55rem; }
+  .quiz-actions { justify-content: center; }
+  .quiz-actions .btn { flex: 1; justify-content: center; }
+
+  /* Login */
+  .login-box { padding: 1.1rem; }
+
+  /* Modal */
+  .modal { padding: .9rem; border-radius: var(--radius); }
   .modal-footer { flex-direction: column; }
   .modal-footer .btn { width: 100%; justify-content: center; }
+  .modal-overlay { padding: calc(var(--a11y-h) + .5rem) .5rem .5rem; }
+
+  /* A11y panel — tela inteira em mobile */
+  .a11y-panel {
+    width: 100%; left: 0; right: 0;
+    border-radius: 0; border-left: 0; border-right: 0;
+  }
+
+  /* Toast */
   #toast-container { right: .4rem; left: .4rem; max-width: 100%; }
+
+  /* Perfil */
+  .profile-needs-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Pomodoro — em mobile fica no canto mas menor */
+  .pomodoro-widget {
+    bottom: 5rem; /* acima do voice-btn */
+    left: .75rem;
+    padding: .5rem .65rem;
+    min-width: 110px;
+  }
+  .pomodoro-timer { font-size: 1.1rem; }
+
+  /* Voice bar — bottom menor para não cobrir conteúdo */
+  .voice-bar { bottom: 1rem; right: .75rem; }
+  .voice-btn { width: 40px; height: 40px; font-size: .88rem; }
+
+  /* Tabelas — scroll interno */
+  .table-wrapper { border-radius: var(--radius); }
+  .table-wrapper table { min-width: 440px; }
 }
+
+/* ── Mobile pequeno (≤380px) ── */
 @media (max-width: 380px) {
   .stats-grid { grid-template-columns: 1fr; }
   .profile-needs-grid { grid-template-columns: repeat(2, 1fr); }
+  .materials-grid { grid-template-columns: 1fr; }
+  .quiz-option { padding: .5rem .6rem; font-size: .78rem; }
+  .result-score { font-size: 2.4rem; }
 }
