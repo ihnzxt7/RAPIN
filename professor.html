@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAPIN — Painel do Professor</title>
+  <meta name="description" content="Painel de gestão de materiais e acompanhamento de alunos — RAPIN">
+  <meta name="theme-color" content="#0D0F1A">
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/gestor.css">
+</head>
+<body>
+<a class="skip-link" href="#prof-page-content">Pular para o conteúdo principal</a>
+
+<!-- SR announcer -->
+<div id="sr-announcer" role="alert" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+
+<!-- Toast -->
+<div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- Spinner -->
+<div id="global-spinner" class="global-spinner hidden" aria-hidden="true" aria-label="Carregando…">
+  <div class="spinner-ring"></div>
+</div>
+
+<!-- Barra de Acessibilidade -->
+<header role="banner">
+  <nav id="a11y-bar" class="a11y-bar" aria-label="Ferramentas de acessibilidade">
+    <!-- preenchida pelo a11y.js -->
+  </nav>
+</header>
+
+<!-- ════════════════════════════════════════
+     LOGIN DO PROFESSOR
+════════════════════════════════════════ -->
+<div id="prof-login" class="gestor-login" role="main" aria-label="Login do professor">
+  <!-- preenchido pelo professor.js -->
+</div>
+
+<!-- ════════════════════════════════════════
+     PAINEL DO PROFESSOR
+════════════════════════════════════════ -->
+<div id="prof-app" class="gestor-app hidden">
+  <div class="gestor-layout">
+
+    <!-- ── Sidebar ── -->
+    <aside class="gestor-sidebar" id="prof-sidebar-el" aria-label="Menu do professor">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
+          <span>Professor</span>
+        </div>
+        <button class="sidebar-toggle" id="prof-mobile-toggle"
+          aria-label="Abrir/fechar menu" style="cursor:pointer;">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Info do professor -->
+      <div class="sidebar-user" aria-label="Informações do professor">
+        <div class="sidebar-avatar" id="prof-avatar"
+          style="background:var(--accent3);color:#fff;" aria-hidden="true">P</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="prof-user-name">Professor</div>
+          <div class="sidebar-user-role" id="prof-user-role">Professor</div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="sidebar-nav" aria-label="Navegação do painel do professor">
+        <div class="nav-section-label" aria-hidden="true">Painel</div>
+
+        <button class="nav-item active" data-page="dashboard" aria-label="Dashboard">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span class="nav-label">Início</span>
+          <span class="nav-item-tooltip" aria-hidden="true">Início</span>
+        </button>
+
+        <div class="nav-section-label" aria-hidden="true">Meus Materiais</div>
+
+        <button class="nav-item" data-page="materials" aria-label="Gerenciar materiais">
+          <i class="fas fa-book-open" aria-hidden="true"></i>
+          <span class="nav-label">Materiais</span>
+          <span class="nav-item-tooltip" aria-hidden="true">Materiais</span>
+        </button>
+
+        <div class="nav-section-label" aria-hidden="true">Turma</div>
+
+        <button class="nav-item" data-page="students" aria-label="Meus alunos">
+          <i class="fas fa-user-graduate" aria-hidden="true"></i>
+          <span class="nav-label">Alunos</span>
+          <span class="nav-item-tooltip" aria-hidden="true">Alunos</span>
+        </button>
+
+        <button class="nav-item" data-page="progress" aria-label="Desempenho dos alunos">
+          <i class="fas fa-chart-bar" aria-hidden="true"></i>
+          <span class="nav-label">Desempenho</span>
+          <span class="nav-item-tooltip" aria-hidden="true">Desempenho</span>
+        </button>
+      </nav>
+
+      <!-- Footer -->
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="prof-logout-btn" aria-label="Sair da plataforma">
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+          <span>Sair</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Área principal ── -->
+    <div class="gestor-main" style="flex:1;display:flex;flex-direction:column;min-width:0;">
+      <!-- Topbar -->
+      <div class="gestor-topbar" style="display:flex;align-items:center;justify-content:space-between;
+        padding:.75rem 1.5rem;background:var(--bg2);border-bottom:1px solid var(--border);
+        position:sticky;top:var(--a11y-h);z-index:80;gap:.75rem;">
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <button id="prof-mobile-open" class="sidebar-toggle"
+            aria-label="Abrir menu" aria-expanded="false" aria-controls="prof-sidebar-el"
+            style="display:none;">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
+          <div>
+            <h1 id="prof-page-title" style="font-size:1.05rem;font-weight:700;margin:0;" aria-live="polite">Início</h1>
+            <p id="prof-page-sub" class="text-muted text-sm" style="margin:0;" aria-live="polite">Bem-vindo ao painel</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;align-items:center;">
+          <button class="btn btn-sm btn-outline" onclick="A11y.openPanel()"
+            aria-label="Configurações de acessibilidade">
+            <i class="fas fa-universal-access" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-sm btn-primary" onclick="PPages.openCreateMaterial()"
+            aria-label="Criar novo material">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <span>Novo Material</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Conteúdo -->
+      <main id="prof-page-content" class="gestor-content" role="main"
+        tabindex="-1" aria-label="Conteúdo do painel do professor">
+        <div class="empty-state">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+          <h3>Carregando…</h3>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Overlay sidebar mobile -->
+  <div class="sidebar-overlay" id="prof-sidebar-overlay" aria-hidden="true"></div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/a11y.js"></script>
+<script src="js/professor.js"></script>
+</body>
+</html>

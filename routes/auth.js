@@ -1,14 +1,14 @@
 'use strict';
 
 /**
- * POST /api/auth/login
- * Body: { email, password }
- * Retorna: { token, user }
+ * POST /api/auth/login  — autenticação, retorna { token, user }
+ * GET  /api/auth/me     — retorna o usuário autenticado pelo token
  */
 
 const router = require('express').Router();
 const jwt    = require('jsonwebtoken');
 const User   = require('../models/User');
+const { authenticate } = require('../middleware/auth');
 
 const JWT_SECRET  = process.env.JWT_SECRET  || 'rapin_secret_dev_2024';
 const JWT_EXPIRES = process.env.JWT_EXPIRES || '7d';
@@ -21,19 +21,17 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'E-mail e senha são obrigatórios.' });
     }
 
-    // Buscar usuário ativo pelo e-mail
     const user = await User.findOne({ email: email.toLowerCase().trim(), active: true });
     if (!user) {
       return res.status(401).json({ message: 'E-mail ou senha incorretos.' });
     }
 
-    // Verificar senha com bcrypt
     const valid = await user.comparePassword(password);
     if (!valid) {
       return res.status(401).json({ message: 'E-mail ou senha incorretos.' });
     }
 
-    // Gerar JWT
+    // Payload inclui id e role — usados pelo middleware authorize()
     const payload = { id: user._id.toString(), role: user.role };
     const token   = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES });
 
@@ -45,14 +43,10 @@ router.post('/login', async (req, res) => {
 });
 
 // ─── GET /api/auth/me ─────────────────────────────────────────────────────────
-router.get('/me', async (req, res) => {
+// Rota protegida: usa o middleware authenticate para validar o token
+router.get('/me', authenticate, async (req, res) => {
   try {
-    const authHeader = req.headers.authorization || '';
-    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
-    if (!token) return res.status(401).json({ message: 'Token não fornecido.' });
-
-    const payload = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(payload.id);
+    const user = await User.findById(req.user.id);
     if (!user || !user.active) {
       return res.status(401).json({ message: 'Usuário inativo ou não encontrado.' });
     }

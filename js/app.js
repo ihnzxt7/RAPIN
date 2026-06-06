@@ -1196,6 +1196,18 @@ const App = {
   },
 
   onLogin(user) {
+    // Redirecionar professor para o painel dedicado
+    if (user.role === 'professor') {
+      window.location.href = 'professor.html';
+      return;
+    }
+
+    // Gestor tem painel próprio — não deveria chegar aqui, mas garantir
+    if (user.role === 'gestor') {
+      window.location.href = 'gestor.html';
+      return;
+    }
+
     document.getElementById('login-screen')?.classList.add('hidden');
     document.getElementById('app-container')?.classList.remove('hidden');
     this._updateSidebarUser(user);
@@ -1272,8 +1284,11 @@ const App = {
             <div><strong>nome@aluno.edu.pi.gov.br</strong> / aluno123 — Dislexia</div>
           </div>
           <div class="login-footer">
+            <a href="professor.html" style="margin-right:.75rem;">
+              <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i> Painel do Professor
+            </a>
             <a href="gestor.html">
-              <i class="fas fa-shield-alt" aria-hidden="true"></i> Acessar Painel do Gestor
+              <i class="fas fa-shield-alt" aria-hidden="true"></i> Painel do Gestor
             </a>
           </div>
         </div>
