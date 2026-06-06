@@ -1,0 +1,242 @@
+/* ============================================================
+   RAPIN — CSS exclusivo do Painel do Professor
+   Importado APÓS style.css e gestor.css.
+   Responsável por: cores do professor, topbar, hambúrguer,
+   cards de progresso e responsividade específica.
+   ============================================================ */
+
+/* ── Cor de marca do professor (teal / accent3) ─────────────── */
+.prof-logo,
+.prof-logo i               { color: var(--accent3) !important; }
+.prof-avatar               { background: var(--accent3) !important; }
+.prof-sidebar .nav-item.active {
+  background: rgba(78,205,196,.12) !important;
+  color: var(--accent3)            !important;
+  border-right-color: var(--accent3) !important;
+}
+.prof-sidebar .nav-item.active i { color: var(--accent3) !important; }
+
+/* ── Topbar do professor ─────────────────────────────────────── */
+.prof-topbar {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem 1.25rem;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar, 80);
+  min-height: 56px;
+}
+
+/* Hambúrguer — oculto em desktop, visível em tablet/mobile */
+.prof-hamburger {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2);
+  cursor: pointer;
+  transition: var(--tr);
+  flex-shrink: 0;
+}
+.prof-hamburger:hover { background: var(--bg3); color: var(--text); }
+
+/* Botão fechar sidebar (dentro da sidebar em mobile) */
+.prof-sidebar-close { display: none; }
+
+/* Título */
+.prof-topbar-title {
+  flex: 1;
+  min-width: 0;
+}
+.prof-topbar-title h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prof-topbar-title p {
+  font-size: .72rem;
+  color: var(--text2);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ações */
+.prof-topbar-actions {
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Seção de alerta de rascunhos ────────────────────────────── */
+.prof-draft-alert {
+  border-left: 3px solid var(--gold);
+  background: rgba(255,209,102,.06);
+}
+.prof-draft-alert .card-title i { color: var(--gold); }
+
+/* ── Cards de desempenho de aluno ────────────────────────────── */
+.prof-student-card {
+  border-radius: var(--radius-lg);
+  transition: border-color var(--tr);
+}
+.prof-student-card:hover { border-color: var(--accent3); }
+
+/* Cabeçalho do card do aluno: avatar + info + botão toggle */
+.prof-student-header {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+}
+.prof-student-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent3), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.prof-student-info { flex: 1; min-width: 0; }
+.prof-student-name {
+  font-size: .92rem; font-weight: 700; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prof-student-meta { font-size: .73rem; color: var(--text2); margin-top: .15rem; }
+.prof-student-tags {
+  display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .45rem;
+}
+
+/* Barra de progresso global do aluno */
+.prof-progress-bar {
+  height: 4px;
+  background: var(--bg4);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: .75rem;
+}
+.prof-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent3), var(--accent));
+  border-radius: 2px;
+  transition: width .5s ease;
+}
+
+/* Detalhe colapsável por material */
+.prof-detail-header {
+  font-size: .7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text3); margin: .85rem 0 .4rem;
+}
+.prof-material-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .6rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  flex-wrap: wrap;
+  row-gap: .25rem;
+}
+.prof-material-row .pmr-icon   { font-size: .85rem; flex-shrink: 0; }
+.prof-material-row .pmr-title  { flex: 1; font-size: .8rem; color: var(--text); min-width: 100px; }
+.prof-material-row .pmr-subj   { font-size: .66rem; }
+.prof-material-row .pmr-score  { font-size: .78rem; font-weight: 600; flex-shrink: 0; }
+.prof-material-row .pmr-tries  { font-size: .68rem; color: var(--text3); flex-shrink: 0; }
+
+/* ── Filtros das páginas ─────────────────────────────────────── */
+.prof-filter-bar {
+  display: flex;
+  gap: .55rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.prof-filter-bar .search-bar  { flex: 2; min-width: 180px; }
+.prof-filter-bar .form-select { flex: 1; min-width: 130px; }
+
+/* ── Ações rápidas no dashboard ─────────────────────────────── */
+.prof-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVO
+══════════════════════════════════════════════════════════════ */
+
+/* ── Tablet/Mobile: ≤960px ── */
+@media (max-width: 960px) {
+  /* Mostrar hambúrguer */
+  .prof-hamburger { display: flex; }
+
+  /* Mostrar botão fechar dentro da sidebar */
+  .prof-sidebar-close { display: flex; }
+
+  /* Sidebar vira drawer fixo */
+  .prof-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    transform: translateX(-100%) !important;
+    transition: transform .3s ease !important;
+    z-index: var(--z-sidebar, 200) !important;
+    box-shadow: 4px 0 28px rgba(0,0,0,.5);
+  }
+  .prof-sidebar.mobile-open {
+    transform: translateX(0) !important;
+  }
+}
+
+/* ── Mobile: ≤600px ── */
+@media (max-width: 600px) {
+  :root { --sidebar-w: 85vw; }
+
+  /* Topbar compacta */
+  .prof-topbar { padding: .5rem .75rem; gap: .5rem; }
+  .prof-btn-label { display: none; } /* só ícone no botão Novo Material */
+  .prof-btn-new { padding: .35rem .55rem; }
+
+  /* Títulos menores */
+  .prof-topbar-title h1 { font-size: .88rem; }
+  .prof-topbar-title p  { display: none; } /* subtítulo some em mobile */
+
+  /* Filtros em coluna */
+  .prof-filter-bar { flex-direction: column; }
+  .prof-filter-bar .search-bar,
+  .prof-filter-bar .form-select { width: 100%; flex: none; min-width: 0; }
+
+  /* Card do aluno: avatar menor */
+  .prof-student-avatar { width: 36px; height: 36px; font-size: .85rem; }
+  .prof-student-name   { font-size: .84rem; }
+
+  /* Ações rápidas em coluna */
+  .prof-quick-actions .btn { width: 100%; justify-content: center; }
+
+  /* Detalhe de material: título ocupa linha inteira */
+  .prof-material-row .pmr-title { min-width: 100%; order: 2; }
+  .prof-material-row .pmr-icon  { order: 1; }
+  .prof-material-row .pmr-score { order: 3; }
+  .prof-material-row .pmr-tries { order: 4; }
+  .prof-material-row .pmr-subj  { order: 5; }
+}
+
+/* ── Mobile pequeno: ≤380px ── */
+@media (max-width: 380px) {
+  :root { --sidebar-w: 100vw; }
+  .prof-student-header { gap: .5rem; }
+  .prof-student-tags   { gap: .25rem; }
+}
